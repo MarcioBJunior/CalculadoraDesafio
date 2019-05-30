@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AlertDialogLayout
+import android.text.TextUtils.substring
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -43,15 +44,32 @@ class MainActivity : AppCompatActivity() {
 
         showEquals.setOnClickListener {
             try {
+                val string = showExpression.text.toString()
+                println(string)
 
-                val expression = ExpressionBuilder(showExpression.text.toString()).build()
-                val result = expression.evaluate()
-                val longResult = result.toLong()
+                //Valida se a expressão se dá no padrão [VALOR] - [OPERAÇÃO] - [VALOR]
+                 if(string.contains("++")|| string.contains("--")|| string.contains("**")
+                     || string.contains("//")){
 
-                if (result == longResult.toDouble())
-                    showResult.text = longResult.toString()
-                else
-                    showResult.text = result.toString()
+                     val builder = AlertDialog.Builder(this)
+                     with(builder)
+                     {
+                         setTitle("Operação Inválida")
+                         setMessage("Por favor digite uma operação válida.")
+                         setNeutralButton("OK", neutralButtonClick)
+                         show()
+                     }
+
+                 }else{
+                     val expression = ExpressionBuilder(showExpression.text.toString()).build()
+                     val result = expression.evaluate()
+                     val longResult = result.toLong()
+
+                     if (result == longResult.toDouble())
+                         showResult.text = longResult.toString()
+                     else
+                         showResult.text = result.toString()
+                 }
 
             } catch (e: Exception) {
                 val builder = AlertDialog.Builder(this)
@@ -68,7 +86,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-
     }
 
     fun appendOnExpression(string: String, canClear: Boolean) {
@@ -84,11 +101,9 @@ class MainActivity : AppCompatActivity() {
             showExpression.append(string)
             showResult.text = ""
         }
-
     }
     val neutralButtonClick = { dialog: DialogInterface, which: Int ->
         Toast.makeText(applicationContext,
             "Digite uma operação válida", Toast.LENGTH_SHORT).show()
     }
-
 }
