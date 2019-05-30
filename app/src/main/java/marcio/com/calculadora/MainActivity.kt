@@ -49,7 +49,10 @@ class MainActivity : AppCompatActivity() {
 
                 //Valida se a expressão se dá no padrão [VALOR] - [OPERAÇÃO] - [VALOR]
                  if(string.contains("++")|| string.contains("--")|| string.contains("**")
-                     || string.contains("//")){
+                     || string.contains("//") || string.contains("+-")|| string.contains("-+")
+                     || string.contains("/+")|| string.contains("+/")|| string.contains("/-")
+                     || string.contains("-/")|| string.contains("*+")|| string.contains("+*")
+                     || string.contains("-*") || string.contains("*-")){
 
                      val builder = AlertDialog.Builder(this)
                      with(builder)
